@@ -3,6 +3,7 @@ import { z } from "zod";
 import { APIError, APIResponse } from "../src/api.js";
 import { accessTokenClaimsSchema } from "../src/auth.js";
 import { APIClient, defineEndpoint } from "../src/client.js";
+import { renderErrorPage } from "../src/error-page.js";
 import {
   DelegatedPermissionSet,
   definePermissionTree,
@@ -25,6 +26,18 @@ describe("API envelopes", () => {
       error: "invalid_request",
       error_description: "Name is required",
     });
+  });
+});
+
+describe("error page", () => {
+  test("renders a self-contained HTML document with a stringified payload", () => {
+    const html = renderErrorPage({ toString: () => "BROKEN <script>alert('x')</script>" });
+
+    expect(html).toStartWith("<!doctype html>");
+    expect(html).toContain("Barry says: Umm i think the error is");
+    expect(html).toContain("BROKEN &lt;script&gt;alert(&#39;x&#39;)&lt;/script&gt;");
+    expect(html).toContain('src="data:image/png;base64,');
+    expect(html).not.toContain('src="/sad_barry.png"');
   });
 });
 

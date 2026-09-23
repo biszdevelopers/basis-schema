@@ -21,6 +21,10 @@
       "types": "./dist/client.d.ts",
       "import": "./dist/client.js"
     },
+    "./error-page": {
+      "types": "./dist/error-page.d.ts",
+      "import": "./dist/error-page.js"
+    },
     "./permissions": {
       "types": "./dist/permissions.d.ts",
       "import": "./dist/permissions.js"
