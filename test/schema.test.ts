@@ -30,14 +30,24 @@ describe("API envelopes", () => {
 });
 
 describe("error page", () => {
-  test("renders a self-contained HTML document with a stringified payload", () => {
-    const html = renderErrorPage({ toString: () => "BROKEN <script>alert('x')</script>" });
+  test("renders only the escaped API error code after the main message", () => {
+    const html = renderErrorPage({
+      status: 500,
+      code: "BROKEN<CODE>",
+      error: "server_error",
+      error_description: "Sensitive implementation details",
+    });
 
     expect(html).toStartWith("<!doctype html>");
-    expect(html).toContain("Barry says: Umm i think the error is");
-    expect(html).toContain("BROKEN &lt;script&gt;alert(&#39;x&#39;)&lt;/script&gt;");
+    expect(html).toContain('go back home</a> (BROKEN&lt;CODE&gt;)</h1>');
+    expect(html).not.toContain("server_error");
+    expect(html).not.toContain("Sensitive implementation details");
     expect(html).toContain('src="data:image/png;base64,');
     expect(html).not.toContain('src="/sad_barry.png"');
+  });
+
+  test("omits the error code when rendered without an error", () => {
+    expect(renderErrorPage(null)).toContain('go back home</a></h1>');
   });
 });
 

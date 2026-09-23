@@ -8,8 +8,8 @@ function escapeHtml(value) {
         "'": "&#39;",
     })[character]);
 }
-export function renderErrorPage(payload) {
-    const renderedPayload = payload ? "<pre>" + escapeHtml(String(payload)) + "</pre>" : "<i>Actually Barry himself doesn't even know what is the problem becuase you overcaffeinated him. Sad...</i>";
+export function renderErrorPage(error) {
+    const renderedCode = error === null ? "" : ` (${escapeHtml(String(error.code))})`;
     return `<!doctype html>
 <html lang="en">
   <head>
@@ -19,10 +19,8 @@ export function renderErrorPage(payload) {
   </head>
   <body>
     <h1>OOPS, something went wrong. You have sucessfully
-      alerted the developers by electrocuting them. Please wait for a bit while the developers figure out the issue. Shouldn't take long!! Try reloading and if that doesn't work, feel free to enjoy <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">this</a></h1>
+      alerted the developers by electrocuting them. Please wait for a bit while the developers figure out the issue. Shouldn't take long!! Try reloading and if that doesn't work, feel free to enjoy <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">this</a> or <a href="/">go back home</a>${renderedCode}</h1>
     <img src="${SAD_BARRY_DATA_URI}" alt="Sad Barry" />
-    <p>Barry says: Umm i think the error is...</p>
-    ${renderedPayload}
     <p>If you like this image consider buying <a href="https://biszweb.club">Developers' Club</a> a coffee</p>
   </body>
 </html>`;

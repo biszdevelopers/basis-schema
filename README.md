@@ -9,7 +9,7 @@ import { renderErrorPage } from "@basis/schema/error-page";
 import { BasisPermissions, DelegatedPermissionSet } from "@basis/schema/permissions";
 ```
 
-`renderErrorPage(payload)` returns a self-contained HTML error document with its image embedded as a data URI. The payload is stringified and HTML-escaped before rendering.
+`renderErrorPage(error)` accepts an `APIErrorResponse` or `null` and returns a self-contained HTML error document with its image embedded as a data URI. When an error is provided, only its escaped `code` is displayed in parentheses after the main message.
 
 Permission definitions use canonical dotted names such as `Users.read` and `OnlineMeetings.MicrosoftTeams.offlineParticipants.create`. Matching is case-insensitive; a permission ending in `.all` grants its descendants.
 
